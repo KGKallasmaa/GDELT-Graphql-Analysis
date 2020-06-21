@@ -1,0 +1,34 @@
+{
+  "name": "gql-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/server.jsx",
+  "scripts": {
+    "start": "node src/server.jsx",
+    "format": "gql-server/node_modules/.bin/prettier --write \\\\\\\"../src/**/*.jsx\\\\\\\"",
+    "develop": "gql-server/node_modules/.bin/nodemon ../src/server.jsx"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "express-graphql": "^0.9.0",
+    "fs": "0.0.1-security",
+    "graphql": "^15.1.0",
+    "lodash": "^4.17.15"
+  },
+  "prettier": {
+    "printWidth": 120,
+    "singleQuote": true,
+    "trailingComma": "es5",
+    "semi": true,
+    "bracketSpacing": true,
+    "arrowParens": "always",
+    "endOfLine": "lf"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.4",
+    "prettier": "^2.0.5"
+  }
+}
