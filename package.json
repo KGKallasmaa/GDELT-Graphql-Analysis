@@ -3,10 +3,11 @@
   "version": "1.0.0",
   "description": "",
   "main": "src/server.jsx",
+  "repository": "https://github.com/KGKallasmaa/GDELT-Graphql-Analysis",
   "scripts": {
     "start": "node src/server.jsx",
-    "format": "gql-server/node_modules/.bin/prettier --write \\\\\\\"../src/**/*.jsx\\\\\\\"",
-    "develop": "gql-server/node_modules/.bin/nodemon ../src/server.jsx"
+    "format": "prettier --write  \"src/**/*.jsx\"",
+    "develop": "nodemon src/server.jsx"
   },
   "keywords": [],
   "author": "",
