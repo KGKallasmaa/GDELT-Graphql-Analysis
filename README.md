@@ -10,23 +10,17 @@ The project was done by:
 The project is part of the Big Data Management course at university of Tartu.
 
 ## Running the project locally, from scratch
-
 ```bash
 bash start.sh
 ```
-
 ## Running the development server
-
 ```javascript
 nodemon src/server.jsx
 ```
-
 ## Running the production server
-
 ```javascript
 node src/server.jsx
 ```
-
 ## Executing queries
 
 Navigate to localhost:3000. There you can find the GraphQl GUI. It's advisable that you study src/graphql/schema.jsx before hand. 
