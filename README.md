@@ -3,27 +3,27 @@
 In this project we're analysing GDELT data with GraphQL. GDELT is a free, constantly-updating data source that publishes world-event related data.
 
 The project was done by:
-1. Riccardo (https://github.com/riccardotommasini)
-2. Maxim (https://github.com/MaximSantalov)
-3. Karl-Gustav (https://github.com/KGKallasmaa)
+1. Riccardo [https://github.com/riccardotommasini]
+2. Maxim [https://github.com/MaximSantalov]
+3. Karl-Gustav [https://github.com/KGKallasmaa]
 
 The project is part of the Big Data Management course at university of Tartu.
 
 ## Running the project locally, from scratch
 
-```
+```bash
 bash start.sh
 ```
 
 ## Running the development server
 
-```
+```javascript
 nodemon src/server.jsx
 ```
 
 ## Running the production server
 
-```
+```javascript
 node src/server.jsx
 ```
 
