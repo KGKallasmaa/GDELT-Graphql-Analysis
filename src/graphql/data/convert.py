@@ -11,8 +11,16 @@ import requests
 import os
 
 
-def convert(files):
-    print("Starting to extract GDELT data from {} .CSV files".format(len(files)))
+
+def delete_old_json():
+    old_files = glob.glob("*.json")
+    if len(old_files) > 0:
+        print("Deleting {} old json files".format(len(old_files)))
+        for f in old_files:
+            os.remove(f)
+
+def convert(file,out_file_name):
+    print("Starting to extract GDELT data from {} ".format(file))
     return_data = []
 
     labels = ["GLOBALEVENTID", "SQLDATE", "MonthYear", "Year", "FractionDate", "Actor1Code", "Actor1Name",
@@ -27,34 +35,22 @@ def convert(files):
               "Actor2Geo_FeatureID", "ActionGeo_Type", "ActionGeo_FullName", "ActionGeo_CountryCode",
               "ActionGeo_ADM1Code", "ActionGeo_Lat", "ActionGeo_Long", "ActionGeo_FeatureID", "DATEADDED", "SOURCEURL"]
 
-    for file_name in files:
-        with open(file_name, 'r') as f:
-            reader = csv.reader(f, delimiter='\t')
-            for (i, line) in enumerate(reader):
-                dictionary = dict(zip(labels, line))
-                # Removing properties that are empty
-
-                value_is_not_empty = lambda v: len(v) > 0 and v is not None
-
-                dictionary = {k: v for k, v in dictionary.items() if value_is_not_empty(v.strip())}
-
-                return_data.append(
-                    {
-                        "identity": i,
-                        "labels": [
-                            "Master"
-                        ],
-                        "properties": dictionary
-                    }
-                )
-        os.remove(file_name)
-
-    print("Starting to write {} rows to master.json file".format(len(return_data)))
+    i = 0
+    with open(file, 'r') as f:
+        reader = csv.reader(f, delimiter='\t')
+        for (i, line) in enumerate(reader):
+            dictionary = dict(zip(labels, line))
+            # Removing properties that are empty
+            value_is_not_empty = lambda v: len(v) > 0 and v is not None
+            dictionary = {k: v for k, v in dictionary.items() if value_is_not_empty(v.strip())}
+            return_data.append({"labels": [ "Master"],"properties": dictionary})
+    os.remove(file)
     data = {"data": return_data}
-    open('master.json', 'w').close()
-    with open('master.json', 'w') as outfile:
+
+    with open(out_file_name, 'w') as outfile:
         json.dump(data, outfile)
-    print("Finished writing the master.json file")
+
+    return True
 
 
 def extract_zip():
@@ -74,7 +70,7 @@ def extract_zip():
                 print('Error: File size if too large')
 
 
-def download(count=2):
+def download(count):
     url = "http://data.gdeltproject.org/events/index.html"
     download_url = "http://data.gdeltproject.org/events"
     html = requests.get(url)
@@ -133,6 +129,14 @@ def _download_chunks(directory, url):
 
 
 if __name__ == '__main__':
-    download()
-    files = glob.glob("*.CSV")
-    convert(files)
+    nr_of_documents = 5
+    download(nr_of_documents)
+    delete_old_json()
+
+    csv_files = glob.glob("*.CSV")
+
+    file_name_generation_f = lambda i: "master"+str(i)+".json"
+    output_file_names = [file_name_generation_f(i) for i in range(len(csv_files))]
+
+    for i in range(len(csv_files)):
+        convert(csv_files[i], output_file_names[i])
