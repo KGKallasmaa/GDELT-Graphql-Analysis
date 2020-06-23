@@ -12,6 +12,7 @@ import os
 from pymongo import MongoClient
 
 
+
 def get_gdelt_collection():
     client = MongoClient(host="127.0.0.1",
                          port=27017,
@@ -40,7 +41,6 @@ def convert(file):
               "ActionGeo_ADM1Code", "ActionGeo_Lat", "ActionGeo_Long", "ActionGeo_FeatureID", "DATEADDED", "SOURCEURL"]
 
     mongodb_collection = get_gdelt_collection()
-
     with open(file, 'r') as f:
         reader = csv.reader(f, delimiter='\t')
         for (i, line) in enumerate(reader):
@@ -48,6 +48,7 @@ def convert(file):
             # Removing properties that are empty
             value_is_not_empty = lambda v: len(v) > 0 and v is not None
             dictionary = {k: v for k, v in dictionary.items() if value_is_not_empty(v.strip())}
+
 
             # Data will be stored under the events collections
             return_data.append(dictionary)

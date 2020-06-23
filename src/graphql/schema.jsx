@@ -63,7 +63,6 @@ type Master {
     ActionGeo_FeatureID: String
     DATEADDED: String
     SOURCEURL: String
-    
 }
 
 """
@@ -77,6 +76,5 @@ type RootQuery {
 
 schema {
     query: RootQuery
-
 }
 `);
