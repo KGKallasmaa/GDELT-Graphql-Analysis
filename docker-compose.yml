@@ -1,0 +1,15 @@
+version: '3.7'
+services:
+  database:
+    image: mongo:latest
+    container_name: gdelt-database
+    environment:
+      - MONGO_DATA_DIR=/data/db
+      - MONGO_LOG_DIR=/dev/null
+      - MONGO_INITDB_DATABASE=gdelt_database
+      - MONGO_INITDB_ROOT_USERNAME=username
+      - MONGO_INITDB_ROOT_PASSWORD=password
+    volumes:
+      - ./mongodb/db:/data/db
+    ports:
+      - "27017:27017"

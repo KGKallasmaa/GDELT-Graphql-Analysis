@@ -1,18 +1,33 @@
 const express = require('express');
 const graphqlHTTP = require('express-graphql');
-const schema = require('./graphql/schema.jsx');
-
-let port = 3000;
+const mongoose = require('mongoose');
 const app = express();
+
+const graphQlSchema = require('./graphql/schema.jsx');
+const graphQlResolvers = require('./graphql/root.jsx');
 
 app.use(
   '/',
   graphqlHTTP({
-    schema: schema,
+    schema: graphQlSchema,
+    rootValue: graphQlResolvers,
     graphiql: true,
     pretty: true,
   })
 );
+const port = 3000;
+function connectToDatabase() {
+  mongoose.connect('mongodb://localhost:27017/gdelt-database', {
+    auth: { authSource: 'admin' },
+    user: 'username',
+    pass: 'password',
+    useMongoClient: true,
+    useUnifiedTopology: true,
+  });
 
-app.listen(port);
-console.log('GraphQL API server running at localhost:' + port);
+  console.log('Successfully connected to the database.');
+  const PORT = 3000;
+  app.listen(PORT);
+  console.log('GraphQL API server running at localhost:' + port);
+}
+connectToDatabase();
