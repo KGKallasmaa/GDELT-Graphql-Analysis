@@ -3,23 +3,27 @@
 
 import csv
 import io
-import json
 import zipfile
 import glob
 from bs4 import BeautifulSoup
 import requests
 import os
 
+from pymongo import MongoClient
 
 
-def delete_old_json():
-    old_files = glob.glob("*.json")
-    if len(old_files) > 0:
-        print("Deleting {} old json files".format(len(old_files)))
-        for f in old_files:
-            os.remove(f)
+def get_gdelt_collection():
+    client = MongoClient(host="127.0.0.1",
+                         port=27017,
+                         username="username",
+                         password="password",
+                         authSource="admin")
+    db = client['gdelt-database']
+    collection = db.events
+    return collection
 
-def convert(file,out_file_name):
+
+def convert(file):
     print("Starting to extract GDELT data from {} ".format(file))
     return_data = []
 
@@ -35,7 +39,8 @@ def convert(file,out_file_name):
               "Actor2Geo_FeatureID", "ActionGeo_Type", "ActionGeo_FullName", "ActionGeo_CountryCode",
               "ActionGeo_ADM1Code", "ActionGeo_Lat", "ActionGeo_Long", "ActionGeo_FeatureID", "DATEADDED", "SOURCEURL"]
 
-    i = 0
+    mongodb_collection = get_gdelt_collection()
+
     with open(file, 'r') as f:
         reader = csv.reader(f, delimiter='\t')
         for (i, line) in enumerate(reader):
@@ -43,14 +48,11 @@ def convert(file,out_file_name):
             # Removing properties that are empty
             value_is_not_empty = lambda v: len(v) > 0 and v is not None
             dictionary = {k: v for k, v in dictionary.items() if value_is_not_empty(v.strip())}
-            return_data.append({"labels": [ "Master"],"properties": dictionary})
-    os.remove(file)
-    data = {"data": return_data}
 
-    with open(out_file_name, 'w') as outfile:
-        json.dump(data, outfile)
+            # Data will be stored under the events collections
+            return_data.append(dictionary)
 
-    return True
+    mongodb_collection.insert_many(return_data)
 
 
 def extract_zip():
@@ -86,8 +88,8 @@ def download(count):
             if any(href.endswith(x) for x in ['.zip']):
                 # We need to keep the headings in mind
                 if href not in not_wanted_files:
-                    print("Downloading '{}'".format(download_url +"/"+ href))
-                    written_file = _download_chunks("./", download_url +"/"+ href)
+                    print("Downloading '{}'".format(download_url + "/" + href))
+                    written_file = _download_chunks("./", download_url + "/" + href)
                     _unzip_file("./", written_file)
                     i += 1
 
@@ -103,7 +105,7 @@ def _unzip_file(directory, zipped_file):
             with io.open(out_path, 'w', encoding='utf-8') as out_file:
                 content = f.read().decode('utf-8')
                 out_file.write(content)
-        os.remove(zipped_file)
+
     except zipfile.BadZipfile:
         print('Bad zip file for {}, passing.'.format(zipped_file))
 
@@ -129,14 +131,10 @@ def _download_chunks(directory, url):
 
 
 if __name__ == '__main__':
-    nr_of_documents = 5
+    nr_of_documents = 10
     download(nr_of_documents)
-    delete_old_json()
 
     csv_files = glob.glob("*.CSV")
 
-    file_name_generation_f = lambda i: "master"+str(i)+".json"
-    output_file_names = [file_name_generation_f(i) for i in range(len(csv_files))]
-
     for i in range(len(csv_files)):
-        convert(csv_files[i], output_file_names[i])
+        convert(csv_files[i])
