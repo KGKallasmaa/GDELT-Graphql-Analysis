@@ -15,13 +15,17 @@ The project is part of the Big Data Management course at university of Tartu.
 
 ## Running the project locally, from scratch
 ```bash
+bash db.sh
+```
+After that, in a separate window
+```bash
 bash start.sh
 ```
-## Running the development server
+## Running the development server (you still need to run bash db.sh)
 ```javascript
 nodemon src/server.jsx
 ```
-## Running the production server
+## Running the production server (you still need to run bash db.sh)
 ```javascript
 node src/server.jsx
 ```
