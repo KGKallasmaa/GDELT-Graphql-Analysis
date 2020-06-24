@@ -50,6 +50,14 @@ services:
     depends_on:
       - zoo1
 
+  manager:
+    image: sheepkiller/kafka-manager
+    ports:
+      - 9000:9000
+    environment:
+      - ZK_HOSTS=zoo:2181
+    depends_on:
+      - zoo1
 
   database:
     image: mongo:latest
