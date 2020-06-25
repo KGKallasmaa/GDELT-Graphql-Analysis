@@ -71,6 +71,9 @@ type Master {
 type RootQuery {
     everything:[Master!]
     top_nr_score(n:Int):[Master!]
+    get_results_between_time_periods(FractionDate_start:Number,FractionDate_end:Number):[Master!]
+    get_results_between_tones(min_tone:Number,max_tone:Number):[Master!]
+    get_actions_month(month:String):[Master!]
 }
 
 

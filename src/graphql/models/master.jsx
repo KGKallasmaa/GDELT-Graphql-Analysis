@@ -16,7 +16,7 @@ const masterSchema = new Schema(
       type: String,
     },
     FractionDate: {
-      type: String,
+      type: Number,
     },
     Actor1Code: {
       type: String,
@@ -112,7 +112,7 @@ const masterSchema = new Schema(
     },
 
     AvgTone: {
-      type: String,
+      type: Number,
     },
 
     Actor1Geo_Type: {
