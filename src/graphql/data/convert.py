@@ -40,7 +40,7 @@ def convert(file):
               "Actor2Geo_FeatureID", "ActionGeo_Type", "ActionGeo_FullName", "ActionGeo_CountryCode",
               "ActionGeo_ADM1Code", "ActionGeo_Lat", "ActionGeo_Long", "ActionGeo_FeatureID", "DATEADDED", "SOURCEURL"]
 
-    mongodb_collection = get_gdelt_collection()
+   # mongodb_collection = get_gdelt_collection()
     with open(file, 'r') as f:
         reader = csv.reader(f, delimiter='\t')
         for (i, line) in enumerate(reader):
@@ -52,8 +52,8 @@ def convert(file):
 
             # Data will be stored under the events collections
             return_data.append(dictionary)
-
-    mongodb_collection.insert_many(return_data)
+    return return_data
+   # mongodb_collection.insert_many(return_data)
 
 
 def extract_zip():
@@ -73,28 +73,26 @@ def extract_zip():
                 print('Error: File size if too large')
 
 
-def download(count):
-    url = "http://data.gdeltproject.org/events/index.html"
-    download_url = "http://data.gdeltproject.org/events"
+def download():
+    url = "http://data.gdeltproject.org/gdeltv2/lastupdate.txt"
+
     html = requests.get(url)
     soup = BeautifulSoup(html.text, "html.parser")
 
     print("Extracting ZIP files")
-    i = 0
-    not_wanted_files = ["GDELT.MASTERREDUCEDV2.1979-2013.zip"]
+ 
+    link = soup.get_text().split()[2]
 
-    for link in soup.find_all('a', href=True):
-        href = link['href']
-        if i < count:
-            if any(href.endswith(x) for x in ['.zip']):
-                # We need to keep the headings in mind
-                if href not in not_wanted_files:
-                    print("Downloading '{}'".format(download_url + "/" + href))
-                    written_file = _download_chunks("./", download_url + "/" + href)
-                    _unzip_file("./", written_file)
-                    i += 1
+   
+    if any(link.endswith(x) for x in ['.zip']):
+        # We need to keep the headings in mind
 
+        print("Downloading '{}'".format(url + "/" + link))
+        written_file = _download_chunks("./", link)
+        out_path = _unzip_file("./", written_file)
+        
     print("Done downloading the zip files")
+    return out_path
 
 
 def _unzip_file(directory, zipped_file):
@@ -109,11 +107,12 @@ def _unzip_file(directory, zipped_file):
 
     except zipfile.BadZipfile:
         print('Bad zip file for {}, passing.'.format(zipped_file))
+    return out_path
 
 
 def _download_chunks(directory, url):
     base_file = os.path.basename(url)
-
+    print(base_file)
     temp_path = directory
     try:
         local_file = os.path.join(temp_path, base_file)
@@ -130,10 +129,16 @@ def _download_chunks(directory, url):
 
     return local_file
 
-
+def download_csv():
+    out_path = download()
+    csv_files = glob.glob("*.CSV")
+    for i in range(len(csv_files)):
+        data = convert(csv_files[i])
+    return out_path,data
+        
 if __name__ == '__main__':
-    nr_of_documents = 10
-    download(nr_of_documents)
+   # nr_of_documents = 10
+    download()
 
     csv_files = glob.glob("*.CSV")
 
