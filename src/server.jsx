@@ -3,7 +3,6 @@ const graphqlHTTP = require('express-graphql');
 const mongoose = require('mongoose');
 const app = express();
 
-
 const graphQlSchema = require('./graphql/schema.jsx');
 const graphQlResolvers = require('./graphql/root.jsx');
 
@@ -22,7 +21,6 @@ function connectToDatabase() {
     auth: { authSource: 'admin' },
     user: 'username',
     pass: 'password',
-    useMongoClient: true,
     useUnifiedTopology: true,
   });
 
