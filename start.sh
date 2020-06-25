@@ -3,6 +3,7 @@ echo "Installing Python dependencies"
 pip install -r requirements.txt
 echo "Starting to download .CSV files"
 cd src/graphql/data/ || exit
+python producer.py
 python convert.py
 rm *.zip
 rm *.CSV
