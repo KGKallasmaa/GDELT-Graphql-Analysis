@@ -1,3 +1,6 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
 from kafka import KafkaConsumer
 from json import loads
 import schedule
@@ -16,13 +19,12 @@ def get_gdelt_db():
                          password="password",
                          authSource="admin")
     db = client['gdelt-database']
-    collection = db.events
-    return collection
+    return db
 
 
 def consume_actor():
     db = get_gdelt_db()
-    actor_collection = db.Actor
+    actor_collection = db.actor
 
     consumer = KafkaConsumer(
         'Actor',
@@ -33,15 +35,17 @@ def consume_actor():
         consumer_timeout_ms=10000,  # 10 sec
         value_deserializer=lambda x: loads(x.decode('utf-8')))
 
+    i = 0
     for message in consumer:
         message = message.value
         actor_collection.insert_one(message)
-        print('{} added to {}'.format(message, actor_collection))
+        i += 1
+    print("Added {} messages to the Actor topic".format(i))
 
 
 def consume_event():
     db = get_gdelt_db()
-    event_collection = db.Event
+    event_collection = db.events
 
     consumer = KafkaConsumer(
         'Event',
@@ -52,10 +56,12 @@ def consume_event():
         consumer_timeout_ms=10000,  # 10 sec
         value_deserializer=lambda x: loads(x.decode('utf-8')))
 
+    i = 0
     for message in consumer:
         message = message.value
         event_collection.insert_one(message)
-        print('{} added to {}'.format(message, event_collection))
+        i += 1
+    print("Added {} messages to the Events topic".format(i))
 
 
 def run_threaded(job_func):
@@ -64,9 +70,12 @@ def run_threaded(job_func):
 
 
 if __name__ == '__main__':
-    schedule.every(15).minutes.do(run_threaded, consume_actor)
-    schedule.every(15).minutes.do(run_threaded, consume_event)
+    schedule.every(16).minutes.do(run_threaded, consume_actor)
+    schedule.every(16).minutes.do(run_threaded, consume_event)
 
+
+
+    sixteen_minutes_in_ms = 960000
     while 1:
         schedule.run_pending()
-        time.sleep(1)
+        time.sleep(sixteen_minutes_in_ms)
