@@ -75,7 +75,7 @@ if __name__ == '__main__':
 
 
 
-    sixteen_minutes_in_ms = 960000
+    sixteen_minutes_in_s = 960
     while 1:
         schedule.run_pending()
-        time.sleep(sixteen_minutes_in_ms)
+        time.sleep(sixteen_minutes_in_s)

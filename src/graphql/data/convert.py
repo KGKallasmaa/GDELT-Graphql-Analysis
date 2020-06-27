@@ -12,6 +12,14 @@ import os
 from pymongo import MongoClient
 
 
+def replace_dictionary_value(key,old_value,new_value,dictionary):
+    if key in dictionary:
+        if dictionary[key] == old_value:
+            dictionary[key] = new_value
+    return dictionary
+
+
+
 def get_gdelt_collection():
     client = MongoClient(host="127.0.0.1",
                          port=27017,
@@ -53,6 +61,9 @@ def convert(file):
             # Removing properties that are empty
             value_is_not_empty = lambda v: len(v) > 0 and v is not None
             dictionary = {k: v for k, v in dictionary.items() if value_is_not_empty(v.strip())}
+
+            dictionary = replace_dictionary_value("Actor1Name","THE US","UNITED STATES",dictionary)
+            dictionary = replace_dictionary_value("Actor2Name","THE US","UNITED STATES",dictionary)
 
             # Data will be stored under the events collections
             return_data.append(dictionary)

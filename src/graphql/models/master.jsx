@@ -94,16 +94,16 @@ const masterSchema = new Schema(
       type: String,
     },
     GoldsteinScale: {
-      type: String,
+      type: Number,
     },
     NumMentions: {
-      type: String,
+      type: Number,
     },
     NumSources: {
-      type: String,
+      type: Number,
     },
     NumArticles: {
-      type: String,
+      type: Number,
     },
     AvgTone: {
       type: Number,
@@ -124,10 +124,10 @@ const masterSchema = new Schema(
       type: String,
     },
     Actor1Geo_Lat: {
-      type: String,
+      type: Number,
     },
     Actor1Geo_Long: {
-      type: String,
+      type: Number,
     },
     Actor1Geo_FeatureID: {
       type: String,
@@ -148,10 +148,10 @@ const masterSchema = new Schema(
       type: String,
     },
     Actor2Geo_Lat: {
-      type: String,
+      type: Number,
     },
     Actor2Geo_Long: {
-      type: String,
+      type: Number,
     },
     Actor2Geo_FeatureID: {
       type: String,

@@ -37,7 +37,7 @@ def csvProducer_actor(converted_files):
     for line in converted_files:
         producer.send(topic=csvDict["topic"], value=line, key=csvDict["topic"])
         i += 1
-    print("Sent {} messages to the Events topic".format(i))
+    print("Sent {} messages to the Actor topic".format(i))
 
 
 def csvProducer_event(converted_files):
@@ -87,7 +87,7 @@ def run_threaded(job_func):
 if __name__ == "__main__":
     schedule.every(15).minutes.do(run_threaded, producer)
 
-    fifteen_minutes_in_ms = 900000
+    fifteen_minutes_in_s = 900
     while 1:
         schedule.run_pending()
-        time.sleep(fifteen_minutes_in_ms)
+        time.sleep(fifteen_minutes_in_s)

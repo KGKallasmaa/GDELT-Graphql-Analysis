@@ -1,12 +1,13 @@
-const master_schemas = require('../../models/master.jsx');
-const { transformMaster } = require('../../transformers.jsx');
+const master_schemas = require('../models/master.jsx');
+const { transformMaster } = require('../transformers.jsx');
 
 const Master = master_schemas.Master;
 
 module.exports = {
   everything: async () => {
     try {
-      const res = await Master.find();
+      let res = await Master.find();
+
       if (!res) {
         return new Error('No results found.');
       }
