@@ -44,6 +44,7 @@ type Master {
     Actor1Geo_FullName: String
     Actor1Geo_CountryCode: String
     Actor1Geo_ADM1Code: String
+    Actor1Geo_ADM2Code: String
     Actor1Geo_Lat: String
     Actor1Geo_Long: String
     Actor1Geo_FeatureID: String
@@ -51,6 +52,7 @@ type Master {
     Actor2Geo_FullName: String
     Actor2Geo_CountryCode: String
     Actor2Geo_ADM1Code:String
+    Actor2Geo_ADM2Code:String
     Actor2Geo_Lat: String
     Actor2Geo_Long: String
     Actor2Geo_FeatureID:String
@@ -58,6 +60,7 @@ type Master {
     ActionGeo_FullName: String
     ActionGeo_CountryCode:String
     ActionGeo_ADM1Code: String
+    ActionGeo_ADM2Code: String
     ActionGeo_Lat: String
     ActionGeo_Long: String
     ActionGeo_FeatureID: String
@@ -71,8 +74,8 @@ type Master {
 type RootQuery {
     everything:[Master!]
     top_nr_score(n:Int):[Master!]
-    get_results_between_time_periods(FractionDate_start:Number,FractionDate_end:Number):[Master!]
-    get_results_between_tones(min_tone:Number,max_tone:Number):[Master!]
+    get_results_between_time_periods(FractionDate_start:Float,FractionDate_end:Float):[Master!]
+    get_results_between_tones(min_tone:Float,max_tone:Float):[Master!]
     get_actions_month(month:String):[Master!]
 }
 

@@ -87,122 +87,102 @@ const masterSchema = new Schema(
     EventBaseCode: {
       type: String,
     },
-
     EventRootCode: {
       type: String,
     },
-
     QuadClass: {
       type: String,
     },
-
     GoldsteinScale: {
       type: String,
     },
-
     NumMentions: {
       type: String,
     },
     NumSources: {
       type: String,
     },
-
     NumArticles: {
       type: String,
     },
-
     AvgTone: {
       type: Number,
     },
-
     Actor1Geo_Type: {
       type: String,
     },
-
     Actor1Geo_FullName: {
       type: String,
     },
-
     Actor1Geo_CountryCode: {
       type: String,
     },
-
     Actor1Geo_ADM1Code: {
       type: String,
     },
-
+    Actor1Geo_ADM2Code: {
+      type: String,
+    },
     Actor1Geo_Lat: {
       type: String,
     },
-
     Actor1Geo_Long: {
       type: String,
     },
-
     Actor1Geo_FeatureID: {
       type: String,
     },
-
     Actor2Geo_Type: {
       type: String,
     },
-
     Actor2Geo_FullName: {
       type: String,
     },
-
     Actor2Geo_CountryCode: {
       type: String,
     },
-
     Actor2Geo_ADM1Code: {
       type: String,
     },
-
+    Actor2Geo_ADM2Code: {
+      type: String,
+    },
     Actor2Geo_Lat: {
       type: String,
     },
-
     Actor2Geo_Long: {
       type: String,
     },
-
     Actor2Geo_FeatureID: {
       type: String,
     },
-
     ActionGeo_Type: {
       type: String,
     },
-
     ActionGeo_FullName: {
       type: String,
     },
-
     ActionGeo_CountryCode: {
       type: String,
     },
-
     ActionGeo_ADM1Code: {
       type: String,
     },
-
+    ActionGeo_ADM2Code: {
+      type: String,
+    },
     ActionGeo_Lat: {
       type: Number,
     },
-
     ActionGeo_Long: {
       type: Number,
     },
-
     ActionGeo_FeatureID: {
       type: String,
     },
-
     DATEADDED: {
       type: String,
     },
-
     SOURCEURL: {
       type: String,
     },
