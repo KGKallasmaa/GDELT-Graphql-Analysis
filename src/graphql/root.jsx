@@ -1,6 +1,10 @@
-const everythingResolver = require('./queries/everything/query.jsx');
+const simpleResolver = require('./queries/simple_query.jsx');
+const mediumResolver = require('./queries/medium_query.jsx');
+const advancedResolver = require('./queries/advanced_query.jsx');
 
 const rootResolver = {
-  ...everythingResolver,
+  ...simpleResolver,
+  ...mediumResolver,
+  ...advancedResolver,
 };
 module.exports = rootResolver;
