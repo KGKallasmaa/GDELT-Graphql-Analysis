@@ -1,4 +1,3 @@
-//Helper function
 function filter_master_by_distance(max_distance_in_km, my_lat, my_long, values) {
   /*
   Distance calculation: https://www.movable-type.co.uk/scripts/latlong.html
