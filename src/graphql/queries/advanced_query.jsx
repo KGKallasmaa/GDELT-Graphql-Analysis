@@ -100,14 +100,14 @@ module.exports = {
       let actor1_score = actorname_pagerank[actor1_Name];
       let actor2_score = actorname_pagerank[actor2_Name];
       if (actor1_score === undefined){
-        actor1_score = 0;
+        actor1_score = 0.0;
       }
       if (actor2_score === undefined){
-        actor2_score = 0;
+        actor2_score = 0.0;
       }
 
       let domain_score_addition = actor1_score * actor2_score * (numMentions - numSources);
-      if (Number.isNaN(domain_score_addition) === false && domain_score_addition > 0) {
+      if (Number.isNaN(domain_score_addition) === false && domain_score_addition > 0.0) {
         domain_score[domain] = domain_current_score + domain_score_addition;
       }
     }
