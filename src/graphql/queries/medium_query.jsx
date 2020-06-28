@@ -81,4 +81,32 @@ module.exports = {
       throw error;
     }
   },
+  get_data_with_n_events_happend_in_dates: async ({ n, start_SQLDATE, end_SQLDATE})=>{
+      try {
+        let res = await Master.find({SQLDATE: {$gte: start_SQLDATE, $lte : end_SQLDATE}});
+        if (!res){
+          return new Error ( 'No results found');
+        }
+        let locations = {};
+        
+        for (let i = 0; i < res.lenght; i++) {
+          let current_location = res[i]['ActionGeo_Fullname'];
+          if (! (current_location in locations)){
+            locations[current_location] = 1;
+          }
+          else {
+            locations[current_location] += 1;
+          }
+        }
+        global_res = []
+        for ( var key in locations){
+          if (locations[key] > n){
+            let small_res = await master.find({ActionGeo_Fullname : key})
+            }
+        }
+       retun global_res
+      } cathc(error){
+        throw error;
+    }
+  },
 };
