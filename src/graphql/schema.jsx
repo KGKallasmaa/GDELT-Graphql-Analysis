@@ -9,7 +9,7 @@ type Master {
     SQLDATE: String
     MonthYear: String
     Year: String
-    FractionDate: String
+    FractionDate: Float
     Actor1Code: String
     Actor1Name:String
     Actor1CountryCode: String
