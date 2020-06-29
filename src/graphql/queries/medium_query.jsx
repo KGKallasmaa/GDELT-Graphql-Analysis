@@ -9,93 +9,111 @@ module.exports = {
     /*
     This function returns n actor for every day that had the most number of mentions per day
      */
+    try {
+      let res = await Master.find({ SQLDATE: { $gte: start_SQLDATE, $lte: end_SQLDATE } });
+      if (!res) {
+        return new Error('No results found.');
+      }
+      res.sort((a, b) => (a.NumMentions > b.NumMentions ? -1 : b.NumMentions > a.NumMentions ? 1 : 0));
 
-    let res = await Master.find({ SQLDATE: { $gte: start_SQLDATE, $lte: end_SQLDATE } });
-    if (!res) {
-      return [];
-    }
-    res.sort((a, b) => (a.NumMentions > b.NumMentions ? -1 : b.NumMentions > a.NumMentions ? 1 : 0));
+      let top_results = {};
 
-    let top_results = {};
+      for (let i = 0; i < res.length; i++) {
+        let current_result = top_results[res[i]['SQLDATE']];
+        if (current_result !== undefined) {
+          let all_event_ids = current_result.map((x) => x['GLOBALEVENTID']);
 
-    for (let i = 0; i < res.length; i++) {
-      let current_result = top_results[res[i]['SQLDATE']];
-      if (current_result !== undefined) {
-        let all_event_ids = current_result.map((x) => x['GLOBALEVENTID']);
-
-        if (all_event_ids.includes(res[i]['GLOBALEVENTID']) === false) {
-          current_result.push(res[i]);
+          if (all_event_ids.includes(res[i]['GLOBALEVENTID']) === false) {
+            current_result.push(res[i]);
+          }
+        } else {
+          current_result = [res[i]];
         }
-      } else {
-        current_result = [res[i]];
+        if (current_result.length > n) {
+          current_result = current_result.slice(0, n);
+        }
+        top_results[res[i]['SQLDATE']] = current_result;
       }
-      if (current_result.length > n) {
-        current_result = current_result.slice(0, n);
-      }
-      top_results[res[i]['SQLDATE']] = current_result;
-    }
 
-    return Object.keys(top_results).map((single_top) => {
-      return transformTop(single_top, top_results[single_top]);
-    });
+      return Object.keys(top_results).map((single_top) => {
+        return transformTop(single_top, top_results[single_top]);
+      });
+    } catch (error) {
+      throw error;
+    }
   },
   get_top_n_negative_actors_near_location: async ({ n, actor1Geo_Lat, actor1Geo_Long, start_SQLDATE, end_SQLDATE }) => {
     /*
     This function returns the actors who had the lowest avg tone and who acted near a given location between two dates.
     The actor is consider near the location if it's within 100 km of the given lat and long
      */
+    try {
+      let res = await Master.find({ SQLDATE: { $gte: start_SQLDATE, $lte: end_SQLDATE } });
+      if (!res) {
+        return new Error('No results found.');
+      }
+      res = filter_master_by_distance(100.0, actor1Geo_Lat, actor1Geo_Long, res);
+      res.sort((a, b) => (a.AvgTone > b.AvgTone ? 1 : b.AvgTone > a.AvgTone ? -1 : 0));
 
-    let res = await Master.find({ SQLDATE: { $gte: start_SQLDATE, $lte: end_SQLDATE } });
-    if (!res) {
-      return [];
-    }
-    res = filter_master_by_distance(100.0, actor1Geo_Lat, actor1Geo_Long, res);
-    res.sort((a, b) => (a.AvgTone > b.AvgTone ? 1 : b.AvgTone > a.AvgTone ? -1 : 0));
+      let top_results = {};
 
-    let top_results = {};
+      for (let i = 0; i < res.length; i++) {
+        let current_result = top_results[res[i]['SQLDATE']];
+        if (current_result !== undefined) {
+          let all_event_ids = current_result.map((x) => x['GLOBALEVENTID']);
 
-    for (let i = 0; i < res.length; i++) {
-      let current_result = top_results[res[i]['SQLDATE']];
-      if (current_result !== undefined) {
-        let all_event_ids = current_result.map((x) => x['GLOBALEVENTID']);
-
-        if (all_event_ids.includes(res[i]['GLOBALEVENTID']) === false) {
-          current_result.push(res[i]);
+          if (all_event_ids.includes(res[i]['GLOBALEVENTID']) === false) {
+            current_result.push(res[i]);
+          }
+        } else {
+          current_result = [res[i]];
         }
-      } else {
-        current_result = [res[i]];
+        if (current_result.length > n) {
+          current_result = current_result.slice(0, n);
+        }
+        top_results[res[i]['SQLDATE']] = current_result;
       }
-      if (current_result.length > n) {
-        current_result = current_result.slice(0, n);
-      }
-      top_results[res[i]['SQLDATE']] = current_result;
-    }
 
-    return Object.keys(top_results).map((single_top) => {
-      return transformTop(single_top, top_results[single_top]);
-    });
+      return Object.keys(top_results).map((single_top) => {
+        return transformTop(single_top, top_results[single_top]);
+      });
+    } catch (error) {
+      throw error;
+    }
   },
-  get_data_with_n_events_happend_in_dates: async ({ n, start_SQLDATE, end_SQLDATE }) => {
-    let res = await Master.find({ SQLDATE: { $gte: start_SQLDATE, $lte: end_SQLDATE } });
-    if (!res) {
-      return [];
-    }
-    let locations = {};
+  get_data_with_n_events_happend_in_dates: async ({ n, start_SQLDATE, end_SQLDATE})=>{
+      try {
+        let res = await Master.find({SQLDATE: {$gte: start_SQLDATE, $lte : end_SQLDATE} });
+        if (!res){
+          return new Error ( 'No results found');
+        	  }
+        let locations = {};
 
-    for (let i = 0; i < res.length; i++) {
-      let current_location = res[i]['ActionGeo_Fullname'];
-      if (!(current_location in locations)) {
-        locations[current_location] = 1;
-      } else {
-        locations[current_location] += 1;
-      }
+        for (let i = 0; i < res.lenght; i++) {
+          let current_location = res[i]['ActionGeo_Fullname'];
+          if (! (current_location in locations)){
+            locations[current_location] = 1;
+         					 }
+          else {
+            locations[current_location] += 1;
+          	}
+        				     }
+        let filtered = Object.keys(locations).reduce(function (filtered, key) {
+                 if (dict[key] > n) filtered[key] = dict[key];
+                 return filtered;
+             }, {});
+
+        let  global_res = {}
+        for ( var key in filtered){
+                let small_res = await master.find({ActionGeo_Fullname : key})
+	               global_res[key] = small_res
+               };
+
+  return Object.keys(global_res).map((single_top) => {
+        return transformTop(single_top, top_results[single_top])
+			})
+    } catch (error) {
+      throw error;
     }
-    let global_res = [];
-    for (let key in locations) {
-      if (locations[key] > n) {
-        let small_res = await Master.find({ ActionGeo_Fullname: key });
-      }
-    }
-    return global_res;
   },
 };
