@@ -88,7 +88,6 @@ type RootQuery {
                                             actor1Geo_Lat:Float,actor1Geo_Long:Float,
                                             start_SQLDATE:String,end_SQLDATE:String):[Top!]
 
-
     find_n_most_powerful_actor_events_using_pagerank_between_two_dates(n:Int,start_SQLDATE:String,end_SQLDATE:String):[Master!]
     find_n_most_powerful_domains_between_two_dates(n:Int,start_SQLDATE:String,end_SQLDATE:String,Geo_Lat:Float,Geo_Long:Float):[String!]
 }
