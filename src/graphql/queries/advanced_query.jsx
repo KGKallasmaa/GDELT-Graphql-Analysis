@@ -99,10 +99,10 @@ module.exports = {
       }
       let actor1_score = actorname_pagerank[actor1_Name];
       let actor2_score = actorname_pagerank[actor2_Name];
-      if (actor1_score === undefined){
+      if (actor1_score === undefined) {
         actor1_score = 0.0;
       }
-      if (actor2_score === undefined){
+      if (actor2_score === undefined) {
         actor2_score = 0.0;
       }
 
