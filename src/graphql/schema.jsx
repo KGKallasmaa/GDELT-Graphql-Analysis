@@ -77,12 +77,12 @@ type Top{
 """
 type RootQuery {
     everything:[Master!]
-    top_nr_score(n:Int):[Master!]
+    top_nr_source(n:Int):[Master!]
     get_results_between_time_periods(FractionDate_start:Float,FractionDate_end:Float):[Master!]
     get_results_between_tones(min_tone:Float,max_tone:Float):[Master!]
     get_actions_month(month:String):[Master!]
 
-    get_data_with_n_events_happend_in_dates(n:Int, start_SQLDATE:String, end_SQLDATE:String)[:Master!],
+    get_data_with_n_events_happend_in_dates(n:Int, start_SQLDATE:String, end_SQLDATE:String):[Master!]
     get_top_n_actors_with_most_mentions_per_day(n:Int,start_SQLDATE:String,end_SQLDATE:String):[Top!]
     get_top_n_negative_actors_near_location(n:Int,
                                             actor1Geo_Lat:Float,actor1Geo_Long:Float,
