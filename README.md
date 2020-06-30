@@ -10,6 +10,7 @@ The project was done by:
 3. Karl-Gustav [https://github.com/KGKallasmaa]
 
 The project was part of the Big Data Management course at the University of Tartu.
+You can read more about on <a href="https://medium.com/@karl.gustav1789/extracting-knowledge-from-gdelt-3f4aaf4ddda1">Medium<a/>
 
 ## Required software
 
