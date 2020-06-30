@@ -12,6 +12,11 @@ The project was done by:
 
 The project is part of the Big Data Management course at university of Tartu.
 
+## Required packages
+
+docker-compose
+python3
+npm
 
 ## Running the project locally, from scratch
 ```bash
@@ -42,4 +47,16 @@ An example of queries can be found  [![Open In Colab](https://colab.research.goo
 
 
 We're happy if you want to contribute to this project. Github <a href="https://github.com/github/super-linter/">Super-linter</a> analyses the code before hand.
+
+
+## Problems
+
+With docker-compose : 'ERROR: Version in "./docker-compose.yml" is unsupported' 
+(1) sudo apt-get remove docker-compose OR sudo rm /usr/local/bin/docker-compose
+
+(2) sudo curl -L "https://github.com/docker/compose/releases/download/1.23.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+
+(3) sudo chmod +x /usr/local/bin/docker-compose
+
+(4) sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
 
