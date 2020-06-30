@@ -14,7 +14,7 @@ module.exports = {
       return transformMaster(single_res);
     });
   },
-  top_nr_score: async ({ n }) => {
+  top_nr_source: async ({ n }) => {
     const res = await Master.find().sort({ NumSources: -1 }).limit(n);
     if (!res) {
       return [];
