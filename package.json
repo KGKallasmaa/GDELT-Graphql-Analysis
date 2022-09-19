@@ -18,7 +18,7 @@
     "fs": "0.0.1-security",
     "graphql": "^15.1.0",
     "lodash": "^4.17.15",
-    "mongoose": "^5.9.20",
+    "mongoose": "^6.6.1",
     "pagerank.js": "^1.0.2"
   },
   "prettier": {
